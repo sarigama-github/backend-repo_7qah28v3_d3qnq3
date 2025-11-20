@@ -38,11 +38,38 @@ class Product(BaseModel):
     category: str = Field(..., description="Product category")
     in_stock: bool = Field(True, description="Whether product is in stock")
 
-# Add your own schemas here:
-# --------------------------------------------------
+# Restaurant app schemas
 
-# Note: The Flames database viewer will automatically:
-# 1. Read these schemas from GET /schema endpoint
-# 2. Use them for document validation when creating/editing
-# 3. Handle all database operations (CRUD) directly
-# 4. You don't need to create any database endpoints!
+class MenuItem(BaseModel):
+    """
+    Menu items available at the restaurant
+    Collection name: "menuitem"
+    """
+    name: str = Field(..., description="Dish name")
+    description: Optional[str] = Field(None, description="Dish description")
+    price: float = Field(..., ge=0, description="Price in dollars")
+    category: str = Field(..., description="Category, e.g., Starters, Mains, Desserts, Drinks")
+    is_vegetarian: bool = Field(False, description="Vegetarian option")
+    is_spicy: bool = Field(False, description="Spicy dish indicator")
+
+class Reservation(BaseModel):
+    """
+    Table reservations
+    Collection name: "reservation"
+    """
+    name: str = Field(..., description="Guest name")
+    email: Optional[str] = Field(None, description="Contact email")
+    phone: str = Field(..., description="Contact phone number")
+    date: str = Field(..., description="Date of reservation (YYYY-MM-DD)")
+    time: str = Field(..., description="Time of reservation (HH:MM)")
+    guests: int = Field(..., ge=1, le=20, description="Number of guests")
+    notes: Optional[str] = Field(None, description="Special requests or notes")
+
+class ContactMessage(BaseModel):
+    """
+    Messages sent from contact form
+    Collection name: "contactmessage"
+    """
+    name: str = Field(..., description="Sender name")
+    email: str = Field(..., description="Sender email")
+    message: str = Field(..., description="Message body")
